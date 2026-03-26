@@ -1,0 +1,134 @@
+@base = http://127.0.0.1:8000/api/v1
+
+# Напоминалка:
+# source src/venv/bin/activate
+# uvicorn src.main:app --reload
+# docker exec -it shad_fastapi_project_2026-db-1 psql -U postgres_user -d fastapi_project_db
+# TRUNCATE TABLE books_table, sellers_table RESTART IDENTITY CASCADE;
+
+
+# ===========================================================
+# === SELLER CREATE & READ ==================================
+
+### CREATE: создать продавца 1
+POST {{base}}/sellers HTTP/1.1
+Content-Type: application/json
+
+{
+  "first_name": "Yulia",
+  "last_name": "Nikitina",
+  "e_mail": "nikitina@example.com",
+  "password": "123456"
+}
+
+### CREATE: создать продавца 2
+POST {{base}}/sellers HTTP/1.1
+Content-Type: application/json
+
+{
+  "first_name": "Max",
+  "last_name": "Bekaruykov",
+  "e_mail": "bekaryukovmv@gmail.com",
+  "password": "654321"
+}
+
+### READ: проверить список продавцов
+GET {{base}}/sellers
+
+### READ: получить продавца по id
+GET {{base}}/sellers/1
+
+
+# ===========================================================
+# === BOOK CRUD =============================================
+
+### CREATE: создать книгу для продавца 1
+POST {{base}}/books/
+Content-Type: application/json
+
+{
+  "title": "Python For Dummies",
+  "author": "Stef Maruch",
+  "year": 2020,
+  "count_pages": 434,
+  "seller_id": 1
+}
+
+### READ: книга по id
+GET {{base}}/books/1
+
+### READ: продавец1 со списком книг
+GET {{base}}/sellers/1
+
+### CREATE: создать книгу для продавца 2
+POST {{base}}/books/
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "author": "Robert Martin",
+  "year": 2025,
+  "count_pages": 350,
+  "seller_id": 2
+}
+
+### READ: посмотреть список книг (все продавцы)
+GET {{base}}/books/ HTTP/1.1
+
+### UPDATE: обновить данные о книге по id
+PUT {{base}}/books/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Fluent Python",
+  "author": "Luciano Ramalho",
+  "year": 2022,
+  "pages": 310
+}
+
+### READ: книга по id (проверить апдейт книги)
+GET {{base}}/books/1
+
+### UPDATE: обновить отдельные поля книги по id
+PATCH {{base}}/books/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "Fluent Python. 2nd edition",
+    "pages": 350
+}
+
+### READ: книга по id (проверить апдейт книги)
+GET {{base}}/books/1
+
+### DELETE: удалить книгу по id
+DELETE {{base}}/books/1 HTTP/1.1
+
+### READ: еще раз посмотреть список книг (все продавцы)
+GET {{base}}/books/ HTTP/1.1
+
+
+# ===========================================================
+# === SELLER UPDATE & DELETE ================================
+
+### UPDATE: обновить данные продавца по id
+PUT {{base}}/sellers/1
+Content-Type: application/json
+
+{
+  "first_name": "Yulia theBest",
+  "last_name": "Nikitina",
+  "e_mail": "nikitina_updated@example.com"
+}
+
+### проверить список продавцов еще раз
+GET {{base}}/sellers
+
+### DELETE: удалить продавца по id
+DELETE {{base}}/sellers/1
+
+### проверить, что продавец удалился (вывести список продавцов)
+GET {{base}}/sellers
+
+### проверить каскадное удаление книг (вывести список оставшихся книг)
+GET {{base}}/books/ HTTP/1.1
