@@ -22,26 +22,6 @@ async def create_seller(seller: IncomingSeller, session: DBSession):
 
 
 # READ: вернуть продавца по ID
-# @sellers_router.get("/{seller_id}", response_model=ReturnedSellerWithBooks)
-# async def get_single_seller(seller_id: int, session: DBSession):
-#     seller = await SellerService(session).get_single_seller(seller_id)
-
-#     if seller is not None:
-#         return seller
-
-#     return Response(status_code=status.HTTP_404_NOT_FOUND)
-
-# @sellers_router.get("/{seller_id}", response_model=ReturnedSellerWithBooks)
-# async def get_single_seller(seller_id: int, session: DBSession):
-#     seller = await SellerService(session).get_single_seller(seller_id)
-
-#     if seller is not None:
-#         return seller
-
-#     return Response(status_code=status.HTTP_404_NOT_FOUND)
-
-
-# @sellers_router.get("/{seller_id}", response_model=ReturnedSeller)
 @sellers_router.get("/{seller_id}", response_model=ReturnedSellerWithBooks)
 async def get_single_seller(seller_id: int, session: DBSession):
     seller = await SellerService(session).get_single_seller(seller_id)
@@ -89,5 +69,5 @@ async def delete_seller(seller_id: int, session: DBSession):
     deleted_seller = await SellerService(session).delete_seller(seller_id)
 
     if not deleted_seller:
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
 

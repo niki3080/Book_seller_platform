@@ -111,7 +111,7 @@ GET {{base}}/books/ HTTP/1.1
 # ===========================================================
 # === SELLER UPDATE & DELETE ================================
 
-### UPDATE: обновить данные продавца
+### UPDATE: обновить данные продавца по id
 PUT {{base}}/sellers/1
 Content-Type: application/json
 

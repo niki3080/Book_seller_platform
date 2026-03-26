@@ -34,8 +34,8 @@ async_test_session = async_sessionmaker(async_test_engine, expire_on_commit=Fals
 @pytest_asyncio.fixture(scope="session")
 def event_loop() -> Generator:
     """Create an instance of the default event loop for each test case."""
-    # loop = asyncio.new_event_loop()  # На разных версиях питона и разных ОС срабатывает по разному
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()  # На разных версиях питона и разных ОС срабатывает по разному
+    # loop = asyncio.get_event_loop()
     yield loop
     try:
         loop.close()

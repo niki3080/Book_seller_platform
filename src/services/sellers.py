@@ -39,6 +39,7 @@ class SellerService:
 
         if seller:
             await self.session.delete(seller)
+            await self.session.flush() 
             return True
 
         else:
@@ -46,15 +47,21 @@ class SellerService:
 
 
     # обновить данные продавца
-    async def update_seller(self, seller_id: int, new_seller_data: ReturnedSeller) -> Seller | None:
+    async def update_seller(self, seller_id: int, new_seller_data: PatchSeller) -> Seller | None:
+    # было:    
+    # async def update_seller(self, seller_id: int, new_seller_data: ReturnedSeller) -> Seller | None:
        
         if updated_seller := await self.session.get(Seller, seller_id):
             updated_seller.first_name = new_seller_data.first_name
             updated_seller.last_name = new_seller_data.last_name
             updated_seller.e_mail = new_seller_data.e_mail
 
-            await self.session.flush()
+            await self.session.flush()                 
+            await self.session.refresh(updated_seller)
+
             return updated_seller
+        
+        return None # новое
 
 
     # частичное обновление данных продавца
@@ -68,8 +75,12 @@ class SellerService:
             if patched_seller.e_mail is not None and patched_seller.e_mail != seller.e_mail:
                 seller.e_mail = patched_seller.e_mail
 
-            await self.session.flush()
+            await self.session.flush()         
+            await self.session.refresh(seller)
+
             return seller
+        
+        return None # новое
 
 
     # вернуть продавца по id
@@ -95,7 +106,8 @@ class SellerService:
         result = await self.session.execute(query)
         sellers = result.scalars().all()
 
-        for seller in sellers:
-            seller.total_books = len(seller.books)
+        # проверить работает ли без этого
+        # for seller in sellers:
+        #     seller.total_books = len(seller.books)
 
         return sellers
