@@ -14,7 +14,21 @@
 
 Написаны все тесты на CRUD продавца и книг, все работает.
 
+Автотесты на продавцов:
+- test_create_seller 
+- test_create_seller_with_short_password 
+- test_create_seller_with_invalid_email 
+- test_get_sellers 
+- test_get_single_seller 
+- test_get_single_seller_with_wrong_id 
+- test_get_seller_with_books 
+- test_update_seller 
+- test_patch_seller 
+- test_delete_seller_without_books 
+- test_delete_seller_with_books 
+- test_delete_seller_with_invalid_id   
 
+-----------
 
 ## Изменения по урокам
 

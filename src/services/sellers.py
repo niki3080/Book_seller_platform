@@ -48,9 +48,7 @@ class SellerService:
 
     # обновить данные продавца
     async def update_seller(self, seller_id: int, new_seller_data: PatchSeller) -> Seller | None:
-    # было:    
-    # async def update_seller(self, seller_id: int, new_seller_data: ReturnedSeller) -> Seller | None:
-       
+           
         if updated_seller := await self.session.get(Seller, seller_id):
             updated_seller.first_name = new_seller_data.first_name
             updated_seller.last_name = new_seller_data.last_name
@@ -61,7 +59,7 @@ class SellerService:
 
             return updated_seller
         
-        return None # новое
+        return None 
 
 
     # частичное обновление данных продавца
@@ -105,9 +103,5 @@ class SellerService:
 
         result = await self.session.execute(query)
         sellers = result.scalars().all()
-
-        # проверить работает ли без этого
-        # for seller in sellers:
-        #     seller.total_books = len(seller.books)
 
         return sellers
